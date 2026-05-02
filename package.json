@@ -1,0 +1,28 @@
+{
+  "name": "java-study-hub",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "author": "Rakesh Kumar",
+  "description": "An interactive Java learning platform with comprehensive study materials and practical coding exercises",
+  "keywords": ["java", "education", "programming", "study", "interview-preparation"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rakeshkumar/java-study-hub"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^16.2.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "eslint": "8.57.0",
+    "eslint-config-next": "14.2.5"
+  }
+}
