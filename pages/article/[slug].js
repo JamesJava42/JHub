@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getAllArticles, getArticleBySlug, getAllTopics, getRelatedArticles } from '../../lib/content';
+import { getAllArticles, getArticleBySlug, getRelatedArticles } from '../../lib/content';
 
 function renderSection(section) {
   return (
@@ -9,32 +9,32 @@ function renderSection(section) {
         <p key={index}>{paragraph}</p>
       ))}
       {section.code ? (
-        <pre style={{ background: '#111827', color: '#f8fafc', padding: '1rem', borderRadius: '1rem', overflowX: 'auto' }}>
+        <pre className="code-block">
           <code>{section.code}</code>
         </pre>
       ) : null}
       {section.tasks ? (
-        <div style={{ marginTop: '1.5rem', padding: '1rem', background: '#f8fafc', borderRadius: '0.5rem', border: '1px solid #e5e7eb' }}>
-          <h3 style={{ color: '#059669', marginTop: 0 }}>💡 Practice Tasks</h3>
-          <ul style={{ paddingLeft: '1.5rem' }}>
+        <div className="task-panel">
+          <h3>💡 Practice Tasks</h3>
+          <ul>
             {section.tasks.map((task, index) => (
-              <li key={index} style={{ marginBottom: '0.5rem' }}>
+              <li key={index}>
                 <strong>{task.title}</strong>
-                <p style={{ margin: '0.25rem 0', color: '#6b7280' }}>{task.description}</p>
+                <p>{task.description}</p>
                 {task.hints && (
-                  <details style={{ marginTop: '0.5rem' }}>
-                    <summary style={{ cursor: 'pointer', color: '#7c3aed', fontSize: '0.9rem' }}>💡 Hints</summary>
-                    <ul style={{ marginTop: '0.5rem', paddingLeft: '1rem' }}>
+                  <details>
+                    <summary>💡 Hints</summary>
+                    <ul>
                       {task.hints.map((hint, hintIndex) => (
-                        <li key={hintIndex} style={{ fontSize: '0.9rem', color: '#6b7280' }}>{hint}</li>
+                        <li key={hintIndex}>{hint}</li>
                       ))}
                     </ul>
                   </details>
                 )}
                 {task.solution && (
-                  <details style={{ marginTop: '0.5rem' }}>
-                    <summary style={{ cursor: 'pointer', color: '#dc2626', fontSize: '0.9rem' }}>🔍 Solution</summary>
-                    <pre style={{ background: '#1f2937', color: '#f8fafc', padding: '0.75rem', borderRadius: '0.25rem', marginTop: '0.5rem', fontSize: '0.85rem', overflowX: 'auto' }}>
+                  <details>
+                    <summary>🔍 Solution</summary>
+                    <pre className="code-block small">
                       <code>{task.solution}</code>
                     </pre>
                   </details>
@@ -53,29 +53,52 @@ export default function ArticlePage({ article, relatedArticles }) {
     return (
       <div>
         <h1>Article not found</h1>
-        <Link href="/">
-          <span className="link-span">Back to home</span>
-        </Link>
+        <Link href="/" className="link-span">Back to home</Link>
       </div>
     );
   }
 
+  const summaryPoints = article.sections.slice(0, 3).map((section) => section.title);
+  const focusPoints = article.tags.map((tag) => `Explain how ${tag} matters in Java and interviews.`);
+
   return (
     <div>
       <section style={{ marginBottom: '2rem' }}>
-        <p style={{ margin: 0, color: '#2563eb', fontWeight: 700 }}>Article</p>
+        <p className="eyebrow">Article</p>
         <h1 className="section-title">{article.title}</h1>
         <p className="section-subtitle">{article.summary}</p>
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+        <div className="tag-row" style={{ marginTop: '1rem' }}>
           {article.tags.map((tag) => (
             <span className="tag" key={tag}>{tag}</span>
           ))}
         </div>
       </section>
 
-      <article className="card article-content">
-        {article.sections.map(renderSection)}
-      </article>
+      <div className="grid grid-2" style={{ gap: '1.5rem' }}>
+        <aside className="mini-card">
+          <h2 className="section-title">Quick review</h2>
+          <ul>
+            {summaryPoints.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
+          <div style={{ marginTop: '1.25rem' }}>
+            <h3 className="section-subtitle">Interview focus</h3>
+            <ul>
+              {focusPoints.slice(0, 4).map((point) => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
+          </div>
+          <div style={{ marginTop: '1.5rem' }}>
+            <Link href="/roadmap" className="link-cta">Continue with the roadmap →</Link>
+          </div>
+        </aside>
+
+        <article className="card article-content">
+          {article.sections.map(renderSection)}
+        </article>
+      </div>
 
       {relatedArticles.length > 0 ? (
         <section style={{ marginTop: '3rem' }}>
@@ -85,8 +108,8 @@ export default function ArticlePage({ article, relatedArticles }) {
               <div key={related.slug} className="card">
                 <h3>{related.title}</h3>
                 <p>{related.summary}</p>
-                <Link href={`/article/${related.slug}`}>
-                  <span className="link-span" style={{ marginTop: '1rem', display: 'inline-block', fontWeight: 600 }}>Open article →</span>
+                <Link href={`/article/${related.slug}`} className="link-cta">
+                  Open article →
                 </Link>
               </div>
             ))}

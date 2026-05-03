@@ -70,6 +70,105 @@ input {
   padding: 1.5rem;
 }
 
+.hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.hero-copy {
+  max-width: 640px;
+}
+
+.eyebrow {
+  color: #2563eb;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  font-size: 0.82rem;
+}
+
+.hero-copy h1 {
+  font-size: clamp(2.5rem, 4vw, 4.25rem);
+  line-height: 1.02;
+  margin: 0;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.75rem;
+}
+
+.button-primary,
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.95rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+}
+
+.button-primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.button-primary:hover {
+  filter: brightness(1.05);
+}
+
+.secondary-button {
+  background: #f8fafc;
+  color: #1d4ed8;
+  border: 1px solid #d1d5db;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.hero-stats div {
+  padding: 1.25rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+}
+
+.hero-stats strong {
+  display: block;
+  font-size: 1.35rem;
+  margin-bottom: 0.4rem;
+}
+
+.hero-card {
+  min-width: 280px;
+  max-width: 420px;
+}
+
+.roadmap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.roadmap-list li {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1rem;
+}
+
 .section-title {
   font-size: 1.8rem;
   margin: 0 0 1rem;
@@ -81,6 +180,42 @@ input {
   color: #4b5563;
 }
 
+.section-header {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.brand {
+  color: white;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-link,
+.tag-link,
+.link-cta {
+  color: #1d4ed8;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nav-link:hover,
+.tag-link:hover,
+.link-cta:hover {
+  text-decoration: underline;
+}
+
 .grid {
   display: grid;
   gap: 1.5rem;
@@ -88,6 +223,29 @@ input {
 
 .grid-2 {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.card-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.mini-card,
+.topic-card,
+.article-preview {
+  background: #f8fafc;
+}
+
+.topic-card-header,
+.article-preview-top {
+  margin-bottom: 1rem;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .list-card {
@@ -101,13 +259,41 @@ input {
 }
 
 .article-content p,
-.article-content li {
+.article-content li,
+.list-card li,
+.task-panel li {
   line-height: 1.75;
+}
+
+.task-panel {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+}
+
+.task-panel h3 {
+  color: #059669;
+  margin-top: 0;
+}
+
+.code-block {
+  background: #111827;
+  color: #f8fafc;
+  padding: 1rem;
+  border-radius: 1rem;
+  overflow-x: auto;
+}
+
+.code-block.small {
+  padding: 0.75rem;
+  font-size: 0.92rem;
 }
 
 .tag {
   display: inline-flex;
-  background: #f3f4f6;
+  background: #ffffff;
   color: #374151;
   border-radius: 9999px;
   padding: 0.35rem 0.75rem;
@@ -119,11 +305,40 @@ input {
   padding: 0.85rem 1rem;
   border-radius: 9999px;
   border: 1px solid #d1d5db;
-  background: #f8fafc;
+  background: #ffffff;
+}
+
+.stats-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 2rem;
 }
 
 .footer {
   margin-top: 3rem;
   padding: 2rem 0;
   color: #6b7280;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  .hero-stats {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-actions,
+  .site-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-stats {
+    grid-template-columns: 1fr;
+  }
 }

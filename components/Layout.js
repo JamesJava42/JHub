@@ -6,14 +6,14 @@ export default function Layout({ children }) {
       <header className="header">
         <div className="container navbar">
           <Link href="/">
-            <span className="link-span" style={{ color: 'white', fontWeight: '700', fontSize: '1.25rem' }}>Java Study Hub</span>
+            <span className="brand">Java Study Hub</span>
           </Link>
-          <nav style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            <Link href="/">
-              <span className="link-span">Home</span>
-            </Link>
-            <a href="#topics">Topics</a>
-            <a href="#articles">Articles</a>
+          <nav className="site-nav">
+            <Link href="/" className="nav-link">Home</Link>
+            <Link href="/roadmap" className="nav-link">Roadmap</Link>
+            <Link href="/search" className="nav-link">Search</Link>
+            <a href="#topics" className="nav-link">Topics</a>
+            <a href="#articles" className="nav-link">Articles</a>
           </nav>
         </div>
       </header>
