@@ -315,6 +315,142 @@ input {
   margin-top: 2rem;
 }
 
+.hero-search-wrapper {
+  margin-top: 1.75rem;
+}
+
+.search-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.suggestion-pill {
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  color: #3730a3;
+  border-radius: 9999px;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+}
+
+.progress-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.progress-overview {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.progress-card-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.progress-bar-wrapper {
+  width: 100%;
+  height: 0.75rem;
+  background: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 0.75rem;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb 0%, #4f46e5 100%);
+}
+
+.status-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.status-list div {
+  display: flex;
+  justify-content: space-between;
+  color: #4b5563;
+}
+
+.goal-grid,
+.path-grid,
+.tag-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.goal-card,
+.path-card,
+.question-card,
+.topic-summary-card,
+.article-link-card,
+.question-panel,
+.progress-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.goal-card {
+  min-height: 220px;
+}
+
+.path-card {
+  padding: 1.5rem;
+}
+
+.question-card,
+.question-panel {
+  padding: 1.5rem;
+}
+
+.topic-row-link,
+.tag-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  color: #111827;
+  text-decoration: none;
+}
+
+.topic-row-link:hover,
+.article-link-card:hover {
+  background: #eef2ff;
+}
+
+.article-link-card {
+  padding: 1.25rem;
+  min-height: 220px;
+}
+
+.tag-grid a {
+  padding: 0.85rem 1rem;
+  border-radius: 9999px;
+  background: #eef2ff;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.topic-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .footer {
   margin-top: 3rem;
   padding: 2rem 0;

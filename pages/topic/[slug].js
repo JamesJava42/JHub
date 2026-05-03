@@ -1,6 +1,37 @@
 import Link from 'next/link';
+import TopicCard from '../../components/TopicCard';
 import { getAllTopics, getTopicBySlug, getArticlesByTopic } from '../../lib/content';
-import ArticlePreview from '../../components/ArticlePreview';
+
+function getDifficulty(slug) {
+  const beginner = [
+    'oop-fundamentals',
+    'data-types',
+    'strings',
+    'access-modifiers',
+    'constructors',
+    'this-super',
+    'static-concepts',
+    'exception-handling',
+  ];
+  const intermediate = [
+    'polymorphism',
+    'encapsulation-abstraction',
+    'inheritance',
+    'comparison',
+    'generics',
+    'collections',
+    'lambda-functional',
+    'streams',
+    'networking-http',
+    'spring-framework',
+    'spring-mvc',
+    'annotations',
+    'reflection',
+  ];
+  if (beginner.includes(slug)) return 'Beginner';
+  if (intermediate.includes(slug)) return 'Intermediate';
+  return 'Advanced';
+}
 
 export default function TopicPage({ topic, articles, relatedTopics }) {
   if (!topic) {
@@ -12,6 +43,10 @@ export default function TopicPage({ topic, articles, relatedTopics }) {
     );
   }
 
+  const difficulty = getDifficulty(topic.slug);
+  const totalTime = Math.max(20, articles.length * 10);
+  const studyOrder = articles.slice(0, 6);
+
   return (
     <div>
       <section style={{ marginBottom: '2rem' }}>
@@ -21,12 +56,31 @@ export default function TopicPage({ topic, articles, relatedTopics }) {
       </section>
 
       <div className="grid grid-2" style={{ gap: '1.5rem', marginBottom: '2rem' }}>
+        <div className="card topic-summary-card">
+          <div className="topic-summary-row" style={{ justifyContent: 'space-between' }}>
+            <span className="badge">{difficulty}</span>
+            <strong>{articles.length} articles</strong>
+          </div>
+          <div className="topic-summary-row" style={{ marginTop: '1rem' }}>
+            <span>Estimated study time</span>
+            <strong>{totalTime} min</strong>
+          </div>
+          <div className="topic-summary-row" style={{ marginTop: '1rem' }}>
+            <span>Recommended mastery</span>
+            <strong>Interview-ready</strong>
+          </div>
+          <div className="topic-actions" style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
+            <Link href={`/article/${articles[0]?.slug || 'oop-fundamentals'}`} className="button-primary">Start Topic</Link>
+            <Link href="/interview-prep" className="secondary-button">Ask Java Mentor</Link>
+          </div>
+        </div>
+
         <div className="card">
-          <h2 className="section-title">What you'll learn</h2>
-          <ul style={{ paddingLeft: '1.4rem', color: '#374151' }}>
-            <li>Explain the most important Java concept behind this topic.</li>
-            <li>Apply it through a complete article with examples.</li>
-            <li>Use targeted review notes for interviews.</li>
+          <h2 className="section-title">What you will learn</h2>
+          <ul className="list-card" style={{ paddingLeft: '1.4rem', color: '#374151', marginTop: '1rem' }}>
+            <li>How this concept works in Java and backend systems.</li>
+            <li>When to use it and how to explain it during interviews.</li>
+            <li>Which follow-up topics to learn next.</li>
           </ul>
           <div className="tag-row" style={{ marginTop: '1rem' }}>
             {topic.tags.map((tag) => (
@@ -34,43 +88,61 @@ export default function TopicPage({ topic, articles, relatedTopics }) {
             ))}
           </div>
         </div>
-
-        <div className="card">
-          <h2 className="section-title">Recommended study path</h2>
-          <div className="list-card">
-            {articles.map((article, index) => (
-              <Link key={article.slug} href={`/article/${article.slug}`} className="tag-link" style={{ marginBottom: '0.75rem' }}>
-                {index + 1}. {article.title}
-              </Link>
-            ))}
-          </div>
-          <div style={{ marginTop: '1.25rem' }}>
-            <Link href="/roadmap" className="link-cta">See the full Java roadmap →</Link>
-          </div>
-        </div>
       </div>
 
-      <section style={{ marginBottom: '2rem' }}>
+      <section className="section">
+        <div className="section-header">
+          <div>
+            <h2 className="section-title">Recommended study order</h2>
+            <p className="section-subtitle">Follow the best learning sequence for this topic</p>
+          </div>
+        </div>
+        <div className="card list-card" style={{ padding: '1rem' }}>
+          {studyOrder.map((article, index) => (
+            <Link key={article.slug} href={`/article/${article.slug}`} className="topic-row-link">
+              <div>
+                <strong>{index + 1}. {article.title}</strong>
+                <p>{article.summary}</p>
+              </div>
+              <span>{Math.max(5, Math.round((article.sections?.length || 1) * 2.5))} min</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="section">
         <h2 className="section-title">Articles in this topic</h2>
         <div className="grid grid-2" style={{ marginTop: '1rem' }}>
           {articles.map((article) => (
-            <ArticlePreview key={article.slug} article={article} />
+            <Link key={article.slug} href={`/article/${article.slug}`} className="card article-link-card">
+              <h3>{article.title}</h3>
+              <p>{article.summary}</p>
+              <div className="tag-row" style={{ marginTop: '1rem' }}>
+                {article.tags.map((tag) => (
+                  <span className="tag" key={`${article.slug}-${tag}`}>{tag}</span>
+                ))}
+              </div>
+            </Link>
           ))}
         </div>
       </section>
 
       {relatedTopics.length > 0 ? (
-        <section>
-          <h2 className="section-title">Related topic clusters</h2>
+        <section className="section">
+          <div className="section-header">
+            <div>
+              <h2 className="section-title">Related topics</h2>
+              <p className="section-subtitle">Continue to adjacent topic clusters once this one is strong.</p>
+            </div>
+          </div>
           <div className="grid grid-2" style={{ marginTop: '1rem' }}>
             {relatedTopics.map((related) => (
-              <ArticlePreview
+              <TopicCard
                 key={related.slug}
-                article={{
-                  slug: related.slug,
-                  title: related.title,
-                  summary: related.description,
-                  tags: related.tags,
+                topic={{
+                  ...related,
+                  difficulty: getDifficulty(related.slug),
+                  articleCount: getArticlesByTopic(related.slug).length,
                 }}
               />
             ))}
