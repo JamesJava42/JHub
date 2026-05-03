@@ -5,7 +5,13 @@
   "license": "MIT",
   "author": "Rakesh Kumar",
   "description": "An interactive Java learning platform with comprehensive study materials and practical coding exercises",
-  "keywords": ["java", "education", "programming", "study", "interview-preparation"],
+  "keywords": [
+    "java",
+    "education",
+    "programming",
+    "study",
+    "interview-preparation"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/rakeshkumar/java-study-hub"
