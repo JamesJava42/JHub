@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getAllTopics } from '../lib/content';
+import { getAllTopics, getArticlesByTopic } from '../lib/content';
 
 const roadmapStages = [
   {
@@ -93,7 +93,10 @@ export default function Roadmap({ topics }) {
               {stage.topics.map((topic) => (
                 <div key={topic.slug} className="mini-card" style={{ padding: '1rem' }}>
                   <h3>{topic.title}</h3>
-                  <p style={{ margin: '0.75rem 0', color: '#4b5563' }}>{topic.description}</p>
+                  <p style={{ margin: '0.5rem 0', color: '#4b5563' }}>{topic.description}</p>
+                  <p style={{ margin: '0 0 0.75rem', fontSize: '0.8rem', color: '#6b7280' }}>
+                    {topic.articleCount} {topic.articleCount === 1 ? 'article' : 'articles'} · {topic.readTime} min read
+                  </p>
                   <Link href={`/topic/${topic.slug}`} className="link-cta">
                     Open topic →
                   </Link>
@@ -117,9 +120,13 @@ export default function Roadmap({ topics }) {
 }
 
 export function getStaticProps() {
-  return {
-    props: {
-      topics: getAllTopics(),
-    },
-  };
+  const topics = getAllTopics().map((topic) => {
+    const articles = getArticlesByTopic(topic.slug);
+    return {
+      ...topic,
+      articleCount: articles.length,
+      readTime: Math.max(20, articles.length * 8),
+    };
+  });
+  return { props: { topics } };
 }

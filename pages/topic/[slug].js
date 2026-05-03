@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import TopicCard from '../../components/TopicCard';
 import { getAllTopics, getTopicBySlug, getArticlesByTopic } from '../../lib/content';
+import { useBookmarks } from '../../hooks/useBookmarks';
 
 function getDifficulty(slug) {
   const beginner = [
@@ -34,6 +35,8 @@ function getDifficulty(slug) {
 }
 
 export default function TopicPage({ topic, articles, relatedTopics }) {
+  const { isBookmarked, toggle } = useBookmarks();
+
   if (!topic) {
     return (
       <div>
@@ -46,12 +49,23 @@ export default function TopicPage({ topic, articles, relatedTopics }) {
   const difficulty = getDifficulty(topic.slug);
   const totalTime = Math.max(20, articles.length * 10);
   const studyOrder = articles.slice(0, 6);
+  const saved = isBookmarked(topic.slug);
 
   return (
     <div>
       <section style={{ marginBottom: '2rem' }}>
+        <nav style={{ marginBottom: '1rem', fontSize: '0.875rem', color: '#6b7280' }}>
+          <Link href="/topics" className="link-span">Topics</Link>
+          {' / '}
+          <span>{topic.title}</span>
+        </nav>
         <p className="eyebrow">Topic overview</p>
-        <h1 className="section-title">{topic.title}</h1>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+          <h1 className="section-title" style={{ margin: 0 }}>{topic.title}</h1>
+          <button className="nav-action" onClick={() => toggle(topic.slug)} style={{ flexShrink: 0 }}>
+            {saved ? 'Saved ✓' : 'Save'}
+          </button>
+        </div>
         <p className="section-subtitle">{topic.description}</p>
       </section>
 

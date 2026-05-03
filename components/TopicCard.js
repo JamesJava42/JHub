@@ -36,7 +36,7 @@ export default function TopicCard({ topic }) {
         ))}
       </div>
       <div className="topic-card-actions">
-        <Link href={`/topic/${topic.slug}`} className="nav-link">Start Topic</Link>
+        <Link href={`/topic/${topic.slug}`} className="link-cta">Start Topic</Link>
         <Link href="/interview-prep" className="link-cta">Practice Questions</Link>
       </div>
     </article>

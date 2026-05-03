@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getAllTopics, getAllArticles } from '../lib/content';
 import TopicCard from '../components/TopicCard';
 import ArticlePreview from '../components/ArticlePreview';
+import { useProgress } from '../hooks/useProgress';
 
 const suggestedSearches = [
   'HashMap internal working',
@@ -152,16 +153,18 @@ function getDifficulty(slug) {
 export default function Home({ topics, articles }) {
   const [query, setQuery] = useState('');
   const text = query.toLowerCase().trim();
+  const { getTopicProgress, getOverallProgress } = useProgress();
 
   const enrichedTopics = topics.map((topic) => {
-    const articleCount = articles.filter((article) => article.topic === topic.slug).length;
+    const topicArticles = articles.filter((article) => article.topic === topic.slug);
+    const articleCount = topicArticles.length;
     return {
       ...topic,
       difficulty: getDifficulty(topic.slug),
       articleCount,
       interviewCount: Math.max(1, Math.round(articleCount * 2.5)),
       readingTime: Math.max(20, articleCount * 8),
-      progress: topic.slug === 'oop-fundamentals' ? 42 : topic.slug === 'collections' ? 18 : 0,
+      progress: getTopicProgress(topic.slug, topicArticles),
       badges: articleCount > 0 ? ['Interview Focused'] : [],
     };
   });
@@ -179,9 +182,18 @@ export default function Home({ topics, articles }) {
 
   const featuredTopics = enrichedTopics.slice(0, 6);
   const featuredArticles = filteredArticles.slice(0, 8);
+
+  const coreFoundationArticles = articles.filter((a) =>
+    ['oop-fundamentals', 'data-types', 'strings', 'access-modifiers', 'constructors', 'this-super', 'static-concepts', 'exception-handling'].includes(a.topic)
+  );
+  const coreCompletion = getTopicProgress('core-foundation', coreFoundationArticles);
+  const overallCompletion = getOverallProgress(
+    topics.map((t) => ({ slug: t.slug, articles: articles.filter((a) => a.topic === t.slug) }))
+  );
+
   const progressPanel = {
     path: 'Core Java Foundation',
-    completion: 42,
+    completion: overallCompletion,
     next: 'Collections Framework',
     status: 'Interview focused',
   };
@@ -242,10 +254,10 @@ export default function Home({ topics, articles }) {
             </div>
           </div>
           <div className="status-list">
-            <div><span>Core Java Foundation</span><strong>{progressPanel.completion}%</strong></div>
-            <div><span>Collections Framework</span><strong>Next</strong></div>
-            <div><span>JVM & Memory</span><strong>Locked</strong></div>
-            <div><span>Spring Backend</span><strong>Coming up</strong></div>
+            <div><span>Core Java Foundation</span><strong>{getTopicProgress('core', coreFoundationArticles)}%</strong></div>
+            <div><span>Collections Framework</span><Link href="/topic/collections" className="link-cta" style={{ fontSize: '0.875rem' }}>Start →</Link></div>
+            <div><span>JVM &amp; Memory</span><Link href="/topic/jvm-architecture" className="link-cta" style={{ fontSize: '0.875rem' }}>Start →</Link></div>
+            <div><span>Spring Backend</span><Link href="/topic/spring-framework" className="link-cta" style={{ fontSize: '0.875rem' }}>Start →</Link></div>
           </div>
         </aside>
       </section>

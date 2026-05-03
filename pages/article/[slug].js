@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { getAllArticles, getArticleBySlug, getRelatedArticles } from '../../lib/content';
+import { useBookmarks } from '../../hooks/useBookmarks';
+import { useProgress } from '../../hooks/useProgress';
 
 function renderSection(section) {
   return (
@@ -49,6 +52,13 @@ function renderSection(section) {
 }
 
 export default function ArticlePage({ article, relatedArticles }) {
+  const { isBookmarked, toggle } = useBookmarks();
+  const { markRead } = useProgress();
+
+  useEffect(() => {
+    if (article?.slug) markRead(article.slug);
+  }, [article?.slug]);
+
   if (!article) {
     return (
       <div>
@@ -60,12 +70,34 @@ export default function ArticlePage({ article, relatedArticles }) {
 
   const summaryPoints = article.sections.slice(0, 3).map((section) => section.title);
   const focusPoints = article.tags.map((tag) => `Explain how ${tag} matters in Java and interviews.`);
+  const readingTime = Math.max(5, Math.round(article.sections.length * 2.25 + 2));
+  const saved = isBookmarked(article.slug);
 
   return (
     <div>
       <section style={{ marginBottom: '2rem' }}>
-        <p className="eyebrow">Article</p>
-        <h1 className="section-title">{article.title}</h1>
+        <nav style={{ marginBottom: '1rem', fontSize: '0.875rem', color: '#6b7280' }}>
+          <Link href="/roadmap" className="link-span">Roadmap</Link>
+          {' / '}
+          {article.topic && (
+            <>
+              <Link href={`/topic/${article.topic}`} className="link-span">{article.topic.replace(/-/g, ' ')}</Link>
+              {' / '}
+            </>
+          )}
+          <span>{article.title}</span>
+        </nav>
+        <p className="eyebrow">Article · {readingTime} min read</p>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+          <h1 className="section-title" style={{ margin: 0 }}>{article.title}</h1>
+          <button
+            className="nav-action"
+            onClick={() => { toggle(article.slug); markRead(article.slug); }}
+            style={{ flexShrink: 0 }}
+          >
+            {saved ? 'Saved ✓' : 'Save'}
+          </button>
+        </div>
         <p className="section-subtitle">{article.summary}</p>
         <div className="tag-row" style={{ marginTop: '1rem' }}>
           {article.tags.map((tag) => (
