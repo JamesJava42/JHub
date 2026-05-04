@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import TopicCard from '../../components/TopicCard';
+import TopicQuiz from '../../components/TopicQuiz';
 import { getAllTopics, getTopicBySlug, getArticlesByTopic } from '../../lib/content';
 import { useBookmarks } from '../../hooks/useBookmarks';
+import { useQuizResults } from '../../hooks/useQuizResults';
+import { quizzes } from '../../data/quizzes';
 
 function getDifficulty(slug) {
   const beginner = [
@@ -36,6 +39,8 @@ function getDifficulty(slug) {
 
 export default function TopicPage({ topic, articles, relatedTopics }) {
   const { isBookmarked, toggle } = useBookmarks();
+  const { hasPassed } = useQuizResults();
+  const quizQuestions = quizzes[topic?.slug] || [];
 
   if (!topic) {
     return (
@@ -163,6 +168,25 @@ export default function TopicPage({ topic, articles, relatedTopics }) {
           </div>
         </section>
       ) : null}
+
+      {quizQuestions.length > 0 && (
+        <section className="section">
+          <div className="section-header">
+            <div>
+              <h2 className="section-title">
+                Test your knowledge
+                {hasPassed(topic.slug) && (
+                  <span style={{ marginLeft: '0.75rem', fontSize: '1rem', color: '#059669', fontWeight: 600 }}>
+                    ✓ Passed
+                  </span>
+                )}
+              </h2>
+              <p className="section-subtitle">5 questions — score 80% or above to mark this topic complete.</p>
+            </div>
+          </div>
+          <TopicQuiz topicSlug={topic.slug} questions={quizQuestions} />
+        </section>
+      )}
     </div>
   );
 }

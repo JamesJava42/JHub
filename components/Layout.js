@@ -34,7 +34,7 @@ export default function Layout({ children }) {
           <div className="nav-actions">
             <button className="nav-action" onClick={() => setPaletteOpen(true)}>Cmd+K</button>
             <button className="nav-action">Theme</button>
-            <Link href="/interview-prep" className="nav-action">Interview Prep</Link>
+            <Link href="/ai-mentor" className="nav-action">AI Mentor</Link>
           </div>
         </div>
       </header>

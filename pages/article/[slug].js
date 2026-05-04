@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getAllArticles, getArticleBySlug, getRelatedArticles } from '../../lib/content';
 import { useBookmarks } from '../../hooks/useBookmarks';
 import { useProgress } from '../../hooks/useProgress';
+import CodeRunner from '../../components/CodeRunner';
 
 function renderSection(section) {
   return (
@@ -12,9 +13,7 @@ function renderSection(section) {
         <p key={index}>{paragraph}</p>
       ))}
       {section.code ? (
-        <pre className="code-block">
-          <code>{section.code}</code>
-        </pre>
+        <CodeRunner code={section.code} />
       ) : null}
       {section.tasks ? (
         <div className="task-panel">
